@@ -12,12 +12,11 @@ namespace Codewars
         static void Main(string[] args)
         {
             User user = new User();
-            int expectedrank = -7;
-            int appliedrank = -4;
-            user.rank = expectedrank;
+            int expectedrank = user.getRank();
+            int appliedrank = -8;
             user.progress = 0;           
             user.incProgress(appliedrank);
-            Console.WriteLine($"Applied Rank: {appliedrank} \nExpected Rank: {expectedrank} \nActual: {user.rank} \nProgress: {user.progress}");
+            Console.WriteLine($"Applied Rank: {appliedrank} \nExpected Rank: {expectedrank} \nActual: {user.getRank()} \nProgress: {user.getProgress()}");
         }
     }
 
@@ -39,21 +38,26 @@ namespace Codewars
         }
         public void incProgress(int actRank)
         {
+            if (rank == 8)
+                return;
+
             if (actRank > 8 || actRank < -8 || actRank == 0)
                 throw new ArgumentException("Invalid activity rank");
-            int diff = 0;
+
+            int diff = -1;
+
             if (rank < 0 && actRank < 0 || rank > 0 && actRank > 0)
                 diff = actRank - rank;
             else if (rank < 0 && actRank > 0)
-                diff = actRank - rank - 1;
-            else
-                diff = -1;
+                diff = (actRank - rank) - 1;
+
             if (diff == 0)
                 progress += 3;
             else if (diff < 0)
                 progress += 1;
             else
                 progress += 10 * diff * diff;
+
             if (progress >= 100 && rank < 8)
                 rankUP();
         }
@@ -61,13 +65,15 @@ namespace Codewars
         {
             while (progress >= 100)
             {
-                if (rank == 8)
-                    break;
+                progress -= 100;
                 rank++;
                 if (rank == 0)
                     rank++;
-                progress -= 100;
+                
             }
+
+            if (rank == 8)
+                progress = 0;
         }
     }
 }
