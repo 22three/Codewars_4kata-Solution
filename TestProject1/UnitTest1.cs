@@ -9,15 +9,15 @@ namespace TestProject1
     {
         public void assertRankProgression(int rank, User user, int expRank, int expProgress)
         {
-            Assert.True(user.rank == expRank,
+            Assert.True(user.getRank() == expRank,
               "Applied Rank: " + rank +
               "; Expected rank: " + expRank +
-              "; Actual: " + user.rank);
+              "; Actual: " + user.getRank());
 
-            Assert.True(user.progress == expProgress,
+            Assert.True(user.getProgress() == expProgress,
               "Applied Rank; " + rank +
               "; Expected progress: " + expProgress +
-              ", Actual: " + user.progress);
+              ", Actual: " + user.getProgress());
         }
 
         [TestCase(-7, -8, 10)]

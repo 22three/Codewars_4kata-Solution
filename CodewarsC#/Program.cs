@@ -12,8 +12,8 @@ namespace Codewars
         static void Main(string[] args)
         {
             User user = new User();
-            int expectedrank = -8;
-            int appliedrank = -7;
+            int expectedrank = -7;
+            int appliedrank = -4;
             user.rank = expectedrank;
             user.progress = 0;           
             user.incProgress(appliedrank);
@@ -25,27 +25,47 @@ namespace Codewars
     {
         public int rank;
         public int progress;
-        public int[] incProgress(int actRank)
+        public User()
+        {
+            this.rank = -8;
+            this.progress = 0;
+        }
+        public int getRank() {
+            return rank;
+        }
+        public int getProgress()
+        {
+            return progress;
+        }
+        public void incProgress(int actRank)
         {
             if (actRank > 8 || actRank < -8 || actRank == 0)
-                throw new ArgumentException();
-            int _rank = actRank - rank;   
-            if (actRank >= 1)
-                _rank--;
-            if (_rank == 0)
-                progress += 3;
+                throw new ArgumentException("Invalid activity rank");
+            int diff = 0;
+            if (rank < 0 && actRank < 0 || rank > 0 && actRank > 0)
+                diff = actRank - rank;
+            else if (rank < 0 && actRank > 0)
+                diff = actRank - rank - 1;
             else
-            progress = 10 * _rank * _rank;
-            if (progress >= 100)
+                diff = -1;
+            if (diff == 0)
+                progress += 3;
+            else if (diff < 0)
+                progress += 1;
+            else
+                progress += 10 * diff * diff;
+            if (progress >= 100 && rank < 8)
                 rankUP();
-            return [rank,progress];
         }
         public void rankUP()
         {
-            if (rank<8)
             while (progress >= 100)
             {
+                if (rank == 8)
+                    break;
                 rank++;
+                if (rank == 0)
+                    rank++;
                 progress -= 100;
             }
         }
